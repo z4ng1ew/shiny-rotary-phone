@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <input type="text">
+  <p class="error"></p>
+  <button>отправить</button>
+  <p id="text"></p>
+  <script>
+    const input = document.querySelector('input');
+    const error = document.querySelector('.error');
+    const text = document.querySelector('#text');
+    const submitButton = document.querySelector('button');
+
+    const isPasswordValid = (password) => {
+      if (password.length > 4 && /^[A-ZА-Я]/.test(password)) {
+        return [true, ''];
+      } else {
+        return [false, "Имя не должно быть короче 6 символов и начинаться с маленькой буквы"];
+      }
+    };
+    const validateInput = () => {
+      const value = input.value;
+      const [isValid, errorMessage] = isPasswordValid(value);
+      if (!isValid) {
+        error.textContent = errorMessage;
+        error.classList.remove('d-none');
+        return false;
+      } else {
+        error.textContent = '';
+        error.classList.add('d-none');
+        return true;
+      }
+    };
+
+    input.addEventListener('input', (event) => {
+      const value = event.target.value;
+      const [isValid, errorMessage] = isPasswordValid(value);
+      if (!isValid) {
+        error.textContent = errorMessage;
+        error.classList.remove('d-none');
+      } else {
+        error.textContent = '';
+        error.classList.add('d-none');
+      }
+    });
+   
+        submitButton.addEventListener('click', () => {
+          if (validateInput()) {
+            text.textContent = 'Успешная валидация';
+          }else{
+            text.textContent = 'Error';
+          }
+        });
+
+
+      
+
+
+    const correctCaseValidationPassword = (f) => {
+      const [isValid, message] = f('Максим');
+      console.log(isValid, message);
+      if (isValid !== true || message !== '') {
+        throw new Error('функция валидации работает неверно на корректном кейсе')
+      }
+    }
+    correctCaseValidationPassword(isPasswordValid)
+  </script>
+</body>
+
+</html>
